@@ -11,9 +11,11 @@ spec:
       labels:
         app: netflix-app
     spec:
+      restartPolicy: Always
       containers:
       - name: netflix-app
         image: quay.io/omidiyanto/netflix-app:latest
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "128Mi"
