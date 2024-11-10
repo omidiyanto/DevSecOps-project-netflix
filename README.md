@@ -756,3 +756,13 @@ To deploy an application with ArgoCD, you can follow these steps, which I'll out
 
 1. **Cleanup AWS EC2 Instances:**
     - Terminate AWS EC2 instances that are no longer needed.
+
+
+# FIX CSRF Protection on Jenkins
+1. Open Manage Jenkins, select "Script Console"
+2. Type this script and run:
+```bash
+import jenkins.model.Jenkins
+def instance = Jenkins.instance
+instance.setCrumbIssuer(null)
+```
