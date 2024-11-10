@@ -29,7 +29,7 @@ spec:
   selector:
     app: netflix-app
   ports:
-  - port: 8182
+  - port: 80
     targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
@@ -49,4 +49,4 @@ spec:
           service:
             name: netflix-app
             port:
-              number: 8182
+              number: 80
