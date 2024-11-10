@@ -40,7 +40,7 @@ metadata:
     name: netflix-app
 spec:
   rules:
-  - host: netflix.omidiyanto.my.id
+  - host: netflix-app.omidiyanto.my.id
     http:
       paths:
       - pathType: Prefix
