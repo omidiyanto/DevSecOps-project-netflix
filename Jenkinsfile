@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
+
         TMDB_V3_API_KEY = credentials('TMDB_API_KEY') 
         
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
