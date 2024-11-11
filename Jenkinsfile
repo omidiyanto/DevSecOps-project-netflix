@@ -6,13 +6,10 @@ pipeline {
     }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-
         TMDB_V3_API_KEY = credentials('TMDB_API_KEY') 
-        
         IMAGE_TAG = "v${env.BUILD_NUMBER}"
         REPOSITORY = 'quay.io/omidiyanto' 
         APP_NAME = 'netflix-app' 
-
         YAML_PATH = 'Kubernetes/netflix-app.yml' 
     }
     stages {
@@ -32,12 +29,13 @@ pipeline {
                     sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
                     -Dsonar.projectKey=Netflix '''
                 }
+                sh 'sleep 5'
             }
         }
         stage("Quality Gate") {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
                 }
             }
         }
@@ -60,7 +58,7 @@ pipeline {
         stage("Docker Build & Push") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'quayio', url: 'https://quay.io', toolName: 'docker') {
+                    withDockerRegistry(credentialsId: 'quay.io-account', url: 'https://quay.io', toolName: 'docker') {
                         sh "docker build --build-arg TMDB_V3_API_KEY=${env.TMDB_V3_API_KEY} -t ${env.REPOSITORY}/${env.APP_NAME}:${env.IMAGE_TAG} ."
                         sh "docker push ${env.REPOSITORY}/${env.APP_NAME}:${env.IMAGE_TAG}"
                     }
@@ -92,6 +90,7 @@ pipeline {
                 to: 'midiyanto26@gmail.com',
                 attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
             )
+            cleanWs()
         }
     }
 }
